@@ -1,0 +1,11 @@
+tags
+test.sh
+.luarc.json
+nvim
+.stylua*
+
+spell/
+lazy-lock.json
+doc
+lua
+lazy-lock.json
