@@ -72,6 +72,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -160,8 +163,19 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- NOTE: Plugins can be added
+  -- with a link (or for a github repo: 'owner/repo' link).
+  -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  {
+    'OXY2DEV/markview.nvim',
+    lazy = false, -- Recommended
+    -- ft = "markdown" -- If you decide to lazy-load anyway
+
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -267,7 +281,7 @@ require('lazy').setup({
         },
         defaults = {
           -- ignore files when searching in Telescope
-          file_ignore_patterns = { '.git\\.*' },
+          file_ignore_patterns = { '.git\\.*', '__pycache__' },
         },
       }
 
@@ -469,7 +483,16 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        pylsp = {},
+        pylsp = {
+          pylsp = {
+            plugins = {
+              pycodestyle = {
+                ignore = { 'E501' },
+                maxLineLength = 100,
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -756,7 +779,7 @@ require('lazy').setup({
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
-        enable = false,
+        enable = true,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
